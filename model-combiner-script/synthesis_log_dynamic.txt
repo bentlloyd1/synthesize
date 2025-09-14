@@ -1,0 +1,460 @@
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Creative Pipeline (SOTA Base -> SOTA Synth)
+######################################################################
+======================================================================
+== PROMPT: asdf
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+It looks like you typed “asdf.” How can I help today?
+
+- Ask me a question (science, history, tech, etc.)
+- Get help drafting or editing text (emails, resumes, posts)
+- Troubleshoot code or explain programming concepts
+- Brainstorm ideas (projects, gifts, names)
+- Summarize or explain a document you paste
+
+Tell me your goal or share a prompt, and I’ll jump in.
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+That's a classic! "asdf" are the first four letters on the home row of a standard QWERTY keyboard.
+
+People often type it to:
+*   Test if an input field is working.
+*   Use it as simple placeholder text.
+*   Just type something random.
+
+It's also the name of the popular animated web series, "asdfmovie".
+
+Were you just testing me out, or is there something I can help you with?
+----------------------------------------------------------------------
+--- SYNTHESIZED RESPONSE (using gemini-2.5-pro) ---
+"asdf" represents the first four letters on the home row of a standard QWERTY keyboard. It's often used to:
+
+*   Test if an input field is working.
+*   Serve as simple placeholder text.
+*   Act as a random, quick keyboard entry.
+
+It is also the name of the popular animated web series, "asdfmovie."
+
+If you were testing the system, that's fine. If you have a task in mind, here are a few examples of what I can do:
+
+*   **Answer questions** on topics like science, history, and tech.
+*   **Draft or edit text**, such as emails, resumes, or posts.
+*   **Assist with code** by troubleshooting or explaining concepts.
+*   **Brainstorm ideas** for projects, gifts, or names.
+*   **Summarize or explain** a document you provide.
+
+Let me know what you need.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Factual Pipeline (SOTA Base -> Quick Synth)
+######################################################################
+======================================================================
+== PROMPT: Explain the concept of 'technical debt' without using any analogies.
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+Technical debt is the accumulation of suboptimal technical decisions or incomplete work that makes future changes more difficult, slower, or riskier.
+
+What it includes
+- Code issues: duplication, high complexity, unclear naming, missing error handling.
+- Design issues: tight coupling, leaky abstractions, inappropriate boundaries, scalability limits.
+- Testing gaps: low coverage, flaky tests, missing integration or performance tests.
+- Documentation gaps: missing or outdated docs, unclear runbooks.
+- Dependencies and tooling: outdated libraries, unsupported platforms, slow or brittle builds.
+- Infrastructure and configuration: manual steps, inconsistent environments, weak observability.
+- Security and data: ad‑hoc access controls, schema drift, inconsistent data quality.
+
+How it arises
+- Time pressure and shifting priorities.
+- Evolving requirements and learning after initial implementation.
+- Lack of standards, reviews, or automated checks.
+- Inexperience with a domain or technology.
+- Underinvestment in maintenance and platform work.
+
+Effects
+- Increased lead time for changes and releases.
+- More defects and regressions.
+- Reduced reliability and operability.
+- Higher onboarding effort and knowledge silos.
+- Lower developer satisfaction and productivity.
+
+Detection and signals
+- Rising change failure rate and incident count.
+- Longer build/test times; flaky pipelines.
+- High code complexity, low test coverage, many static analysis findings.
+- Aging dependencies; frequent hotfixes; high code churn.
+- Increasing time spent on maintenance versus feature work.
+
+Managing and reducing it
+- Make it visible: track items in the backlog with owners and scope.
+- Prioritize by impact on delivery, risk, user-facing value, and coupling to critical areas.
+- Set and enforce quality gates (reviews, linters, tests, performance/security checks).
+- Refactor continuously; add characterization tests before changes.
+- Modernize dependencies and platforms incrementally with rollback plans.
+- Automate builds, tests, deployments, and environment setup.
+- Allocate regular capacity (e.g., a fixed percentage) and measure outcomes (lead time, incidents, build stability).
+
+Good practice
+- Be explicit when taking shortcuts, document constraints, and define follow-up tasks.
+- Avoid large rewrites without tests or clear success criteria.
+- Demonstrate progress with measurable improvements rather than broad labels.
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+Of course. Here is an explanation of technical debt without using any analogies.
+
+### The Concept of Technical Debt
+
+Technical debt is the implied future cost of rework caused by choosing an easy or limited solution now instead of using a better, more robust approach that would take longer to implement.
+
+It is a consequence of decisions made during the software development process. These decisions trade long-term code quality and maintainability for short-term gains, such as meeting a deadline or releasing a feature faster.
+
+This "debt" does not go away on its own. If it is not "repaid"—that is, if the suboptimal code is not improved or rewritten—it will continue to have negative effects. These effects tend to compound over time, making future development progressively more difficult and time-consuming.
+
+---
+
+### How Technical Debt is Created
+
+Technical debt can be created in several ways, both intentionally and unintentionally:
+
+*   **Deliberate, Strategic Decisions:** A team might consciously decide to implement a feature in a non-ideal way to meet a critical business deadline. The team acknowledges the shortcut and plans to fix it later. For example, hard-coding a value that should be configurable, knowing it will need to be changed in the next release.
+*   **Unintentional or Accidental Actions:** This happens when developers, perhaps due to a lack of experience or incomplete understanding of the system, write code that is difficult to change. For example, creating components that are too tightly connected to each other, so a change in one requires complex changes in many others.
+*   **Evolving System Requirements:** Software that was well-designed for its original purpose can accumulate technical debt as new features are added. These new requirements may not fit neatly into the existing design, forcing developers to add complex workarounds that degrade the original structure.
+*   **Lack of Refactoring:** The natural tendency for software to become more complex over time is called entropy. Without a consistent practice of cleaning up and simplifying the code (refactoring), its quality will inevitably decline.
+*   **Insufficient Testing:** A lack of automated tests makes developers hesitant to change or improve existing code because they cannot easily verify that their changes haven't broken something else. This leads to code stagnating and becoming "debt."
+
+---
+
+### The Consequences (The "Cost" of the Debt)
+
+The presence of technical debt manifests in several negative ways:
+
+*   **Slower Development Velocity:** Simple changes take a long time to implement because developers must first understand a complex or poorly documented system and then carefully navigate its flaws to avoid causing new problems.
+*   **Increased Bugs and Errors:** Code that is complex, inconsistent, or brittle is more prone to defects. A change in one area can have unexpected and negative side effects in another.
+*   **Difficulty in Onboarding:** It takes much longer for new developers to become productive because the codebase is hard to understand. The original context for why certain decisions were made is often lost.
+*   **Reduced Developer Morale:** Consistently working with a difficult, frustrating, and bug-prone codebase is demoralizing for engineering teams, which can lead to burnout and high employee turnover.
+
+In essence, technical debt is the direct trade-off between short-term speed and long-term system health. While sometimes a necessary business decision, unmanaged technical debt will eventually make a software system difficult and costly to maintain and evolve.
+----------------------------------------------------------------------
+--- SYNTHESIZED RESPONSE (using gpt-4o) ---
+Technical debt is the accumulation of suboptimal decisions or unfinished work in software development that complicates future changes. It often stems from prioritizing short-term gains, like meeting a deadline, over long-term code quality and maintainability. This leads to increased complexity, outdated dependencies, and insufficient testing or documentation, among other issues.
+
+Technical debt can arise from deliberate shortcuts, inexperience, evolving system requirements, or a lack of refactoring and testing. Although taking such shortcuts might be strategically necessary, without repayment—meaning improvements or corrections—the debt will compound, causing future development to be slower, more prone to defects, and costly to manage.
+
+The consequences include reduced development efficiency, increased bugs, difficulty in onboarding new team members, and lower developer morale. Managing technical debt involves tracking it, prioritizing fixes based on impact, enforcing quality standards, refactoring regularly, and modernizing tools and practices. Ultimately, technical debt represents a trade-off between immediate speed and the long-term health of a software system.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Creative Pipeline (SOTA Base -> SOTA Synth)
+######################################################################
+======================================================================
+== PROMPT: Write a short, suspenseful story that starts with the line: 'The old clock chimed thirteen times.'
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+The old clock chimed thirteen times.
+
+I froze behind the deserted front desk and counted them, each toll a cold tap on the bones. One. Two. Three. The rain dimmed the harbor lights beyond the glass doors, and the Harborview Hotel held its breath between storms. Four. Five. The lobby smelled of furniture polish and old roses, the perfume that never quite left the rug after Mrs. Alvarez scrubbed it in ’97. Six. Seven. The grandfather clock by the window had been there since the opening gala in 1929, its face crazed like dried mud, its brass pendulum a slow, ticking metronome that had never lied. Eight. Nine. Ten. I pressed the heel of my hand into the ledger until the paper flowered under my palm. Eleven. Twelve.
+
+Silence.
+
+Then, thirteen. A thirteenth chime that had no note, only pressure, a weight on the air that seemed to press each shadow an inch deeper. The sound wasn't so much heard as felt, a pulse that found the hollow under my sternum and tapped: you.
+
+I took my hand off the ledger. The pen rolled off and clinked against the bell. The Harborview didn’t have a thirteenth floor. The elevator panel went from twelve to PH, like every good old hotel where superstition survived the wiring.
+
+Somewhere in the lobby, something dinged.
+
+I turned. The elevator at the far end had pulled itself from the dark, its brass cage lit with a faint, amber light. The gate was open an inch. No one had called it. No one had touched the buttons. The rain stitched a steady line against the revolving door.
+
+“Power surge,” I told the empty room. I liked my voice speaking that softly, the way it didn’t tremble, the way the old building absorbed it like a secret.
+
+I crossed the lobby with my key on a short brass chain. It swung and flashed in the weak light as I walked. My sneakers were almost noiseless on the carpet, but the click of the chain kept me tethered. The grandfather clock had fallen silent again. The pendulum ticked. Tick. Tick. The missing minute hung somewhere between.
+
+At the elevator, the light above the door didn’t point to any floor. There was a space where 13 would be on a different building's panel, a superstition gap between twelve and the penthouse. The call button was cool under my thumb. Nothing changed. The gate sighed on its own.
+
+When I pulled it fully open with a rattling sweep, stale air lifted out and touched my mouth with dust and something sweeter—powder and lilac, the echo of a glove. At hip height on the brass was a smeared handprint, the size of a child’s, thin and long, the grease fresh enough to glisten.
+
+I shouldn’t have stepped in. But storms do things to a place like this. In the low months, with only a handful of guests and a floor of burnt-out suites, I had wandered every corridor and stairwell and broom closet. I’d spent a summer here as a kid when my mother cleaned the rooms and I learned to fold corners tighter than any soldier. I knew when pipes talked and when to ignore the boiler’s mourning. I told myself I was keeping an eye on something that might be wrong.
+
+I stepped in. The gate closed with a shiver.
+
+The button panel looked normal. L for Lobby was lit. I didn’t touch anything. The car hummed anyway. It rose with a steady old-man patience, the kind that expects you to wait, the way old men expect you to listen. Floor lights clicked by: 2, 3, 4—each little amber bulb flaring and going out. My reflection followed me in the polished brass: narrow face, dark eyes, the old hotel name tag pinned to my flannel as a joke—ETHAN, NIGHT DESK.
+
+“Stop,” I said, and the car did. Not because I told it to. Because something else did.
+
+The light skipped past 12.
+
+The numbers didn’t show PH. They didn’t show anything. The panel simply lit a space that wasn’t there, between twelve and nothing. The car made a sound like it was withdrawing breath, and when it shuddered and the gate unlatched, the opening in front of me was a corridor I didn’t know.
+
+Doors ran both sides in a tidy half circle down to a curve and back, the runner carpet woven with ferns pressed flat to gold. The air ran cool, bringing a dry taste of old paper and salt. The lights were on, but dim, with a faint sweeting like lamps left too long untouched. Stenciled numbers on the doors read 1301, 1303, 1305 in neat serif, as if the hotel had finally decided to stop lying to the building and put the hidden floor where it always wanted to be.
+
+My stomach slid cold. I thought of my mother’s hands. She was twenty-five when the Harborview hired her. She used to joke about the thirteenth floor when she did my bedtime rounds, saying, “If the clock says thirteen, you don’t answer it. You let it say your name and you pretend you never had one.” She said it with a smile. She said it because her first boss told her and the boss’s boss before that, because every place has its rules. She left one November without leaving a note. The hotel stayed.
+
+Something moved at the far end of the hall. Not much. A shift, the memory of a breath, a change in darkness that might only have been the swimming of my own blood in my ears.
+
+“Left a light on,” I told myself. I hated when my voice shook.
+
+I kept one hand on the gate, white-knuckled, and leaned out. The noise came again. Not a footstep. A drag. As if someone were drawing a flat hand along the wall, touching the ferns and counting.
+
+“Ethan,” something said, very soft. Not a different voice. A shape of air. The way a mouth feels the shape of your name before it’s even sound. The hair on my arms pushed up in a bristle. Behind the far door, a television murmured through static, a sitcom laugh track filtered through water. All the way down the hall, someone had hung a Do Not Disturb sign on a knob. Please, it said in looping ink, no, and you had to look twice to notice the second word scratched under the first.
+
+I stepped out into the carpet and the gate slid shut behind me with a polite, final click.
+
+My phone buzzed. The sound was too bright. I nearly yelled.
+
+A text from ETHAN. I stared at my own name until the letters lost shape. The message said, in my plain, fast thumbed-out style, Don’t let it say your name. Keep your eyes on the elevator.
+
+Static walked my spine. Another buzz. Same number. You didn’t the first time.
+
+The corridor breathed. The fern pattern seemed to shift without moving, a trick of the light that made the stems not quite line up from one board to the next. I could feel the elevator at my back like heat. I could feel the shape at the end of the hall like cold.
+
+“Ethan,” it said again. Not soft this time. As if it were testing the weight of the vowels on a tongue that didn’t know how to swallow. Then other voices took my name for a turn. My mother’s, edged and tired. Mr. Bains from the hardware store, raising it into a question. My own, childish, from a summer of folding hospital corners and laughing at guests’ dogs. “Ethan.” Like a key run along brass. “Ethan.” Like a hand in the next room, fondling a glass.
+
+The Do Not Disturb sign twitched once, as if someone behind it had plucked the card and let it go.
+
+I did not look down the hall. I did not look at the doors. I kept my eyes on the elevator’s brass lattice and counted screws in the lattice and told my breath not to think about the footsteps that weren’t footsteps and the voices that wanted to be mine. I put my hand behind me without turning my head. The gate’s surface was cool. It bit my palm lightly, smaller notches worn where countless hands had pulled it shut and open. It flared under my skin like ice in a bruise.
+
+Something took another half step. I could feel the carpet nap rise and settle.
+
+“Ethan,” the voices said. “Hey, kid,” my mother said, right at my ear, so close I could feel the wind of it. She said it with that laugh I had forgotten for twenty years until it softened the vowels again. “Hey, kid. Hey, hey, look at me.”
+
+My hand found the little notch that let the gate roll back. It stuck. I pulled and it gave. I stepped backward into the cage. Don’t let it say your name, I recited. Don’t let it have your eyes. Don’t give it the shape of your face.
+
+“Hey, kid,” the voices said, together and separate, like rain hitting a hundred windows. A shape slid along the brass and pressed through, dark ridges folding themselves through the lattice punch by punch like knuckles. A hand. Not mine. Too long between the joints. The nails too flat and wide. I hit L with the heel of my hand and the car lurched into motion with a long, grateful groan.
+
+The hand didn’t draw back until the gate’s edge kissed its skin. It didn’t bleed. It withdrew like paper sliding under a door.
+
+Twelve, eleven, ten. The lights blinked obediently in sequence. The car hummed like an old man, satisfied. I stared at the lattice and did not look at the space where the hand had been, and felt the elevator’s breath catch once at a level where no button burned and then go on.
+
+When the gate slid open, the lobby opened its arms like it always did. The front desk sat with its ledgers and its pen. Rain tapped the glass in the same thin stitches. But the carpet had changed. The rose set in the center was larger, too red, and the border wove a different knot. The bell on the counter had a crack like a hair in a mirror. The Harborview's name on the wall behind me read Harborview & Sons in a font I had never seen except in photographs. My stomach swung.
+
+I turned to the clock. The pendulum hung straight, caught dead at the exact middle of its arc. The hands were at twelve. The face was bright, the cracks more like veins than age. The case gleamed as though someone had polished it this afternoon, and in the glass I saw my reflection wearing a brass tag: ETHAN, NIGHT MANAGER, in a font that matched the wall. The pin was heavy on my chest though I hadn’t felt anyone pin it.
+
+There was a parcel by the mail slots, wrapped in twine. The tag was yellowed and read Mr. E. Hale, 1304, and the handwriting was my mother’s before the tremor, from old notes she left on my school lunches. The key taped to it was a long old skeleton key, not the little plastic fob I knew.
+
+I picked it up. My phone vibrated once more and then went still in my pocket. When I took it out, it wasn’t a phone but a silver case with a mirror, the inside lined with what looked like silk the color of lilacs.
+
+I put the parcel down very carefully because all at once I knew two true things: I had not left the Harborview, and I had not come back to it. A seam had opened in the rain, and the hotel had slid to fit itself along it with a sigh.
+
+Behind me, the elevator dinged.
+
+It was a bright little sound, cheerful as a child's laugh. It made my chest ache. Somewhere above, where the air was a little colder and the carpet damp with salt, a light that’s not on any panel lit up. Footsteps—no, the sound of something remembering footsteps—began down a hall that wasn’t supposed to exist, moving toward the only voice it could find.
+
+“Don’t answer,” I said to nobody and everybody, to the big clock and the empty lobby and the rain and whatever had ridden down with me. The old clock’s case tightened, wood settling. It wanted a thirteenth chime. It wanted to be on time.
+
+“Don’t look,” I said, and behind my own words I could hear the way my mother had once said them, smoothing a sheet and tucking it under a mattress corner, making a bed that would not lose its shape. “Don’t let it say your name.”
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+The old clock chimed thirteen times.
+
+Elias froze, a half-dusted book held limply in his hand. The grandfather clock in the hall, a sombre oak giant that had marked his family's every passing hour for a century, had a deep, resonant chime. He knew its voice better than his own. It was a twelve-note song, a predictable comfort in the creaking silence of the ancestral home.
+
+But this was thirteen.
+
+The final, dissonant clang hung in the air, vibrating not just in his ears but deep in his bones. It was wrong. A note played in a key that didn’t exist.
+
+When the vibration finally died, the silence that rushed in to replace it was heavier than before. It was a smothering, absolute void. The familiar groans of the old house, the whisper of wind through the eaves—all of it was gone. The world outside the grimy windows seemed to have been erased.
+
+Elias set the book down, his movements stiff. “Spring must have slipped,” he muttered, the words sounding small and foolish in the oppressive quiet. He walked towards the hallway, his footsteps echoing with unnerving clarity on the worn floorboards.
+
+The clock stood like a coffin set on end, its brass pendulum arrested mid-swing. But that wasn't what made a prickle of ice trace its way up his spine. It was the air around the clock. It was cold. Not just a draft, but a dead, cellar-cold that clung to his skin. He could see his own breath misting in the dim light.
+
+He reached out a trembling hand to touch the clock’s face, but stopped. On the polished floorboards at the base of the clock, a shadow was pooling. It wasn’t a shadow cast by the clock itself; the hall was too dim for such a dark, sharp-edged shape. This was a sliver of absolute black, a patch of night that seemed to drink the light around it.
+
+As he watched, paralyzed, the shadow began to move. It didn't spread. It seeped, elongating itself, stretching from the clock’s base like a long, searching finger. It slithered across the floor, silent and deliberate, inching towards him.
+
+A smell reached him then, faint but foul—the scent of damp earth and something sweet, like wilted funeral lilies. The cold intensified. Frost, delicate and impossible, began to bloom on the glass of the clock’s face, obscuring the silent, accusing hands within.
+
+Elias finally found his legs and stumbled backwards, knocking over a small side table. A porcelain vase shattered on the floor, the sound a shriek in the profound stillness.
+
+The shadow stopped. It retracted slightly, then rose from the floor. It peeled itself from the ground, no longer a two-dimensional stain but a wavering, man-shaped silhouette of pure void. It had no features, no substance, yet he felt the chilling weight of its attention.
+
+He looked from the creeping darkness to the clock's face, now almost entirely white with frost. The long, slender hands were no longer visible. And Elias understood with a sudden, soul-crushing certainty.
+
+The thirteenth chime wasn't a mistake. It was the bell that announced a door had been opened. And something had just walked through.
+----------------------------------------------------------------------
+--- SYNTHESIZED RESPONSE (using gemini-2.5-pro) ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Factual Pipeline (SOTA Base -> Quick Synth)
+######################################################################
+======================================================================
+== PROMPT: Generate a Python function that takes a URL and returns the top 5 most common words on the page.
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+def top_5_common_words(url, top_n=5, stopwords=None):
+    """
+    Fetches the page at `url` and returns the top `top_n` most common words as a list of (word, count) tuples.
+    Uses only the Python standard library.
+
+    Args:
+        url (str): The URL of the web page to analyze.
+        top_n (int): Number of top words to return. Default is 5.
+        stopwords (set[str] | None): Optional custom stopword set (lowercase). If None, a default English set is used.
+
+    Returns:
+        list[tuple[str, int]]: List of (word, count) sorted by descending frequency, then alphabetically.
+    """
+    import re
+    from collections import Counter
+    from html.parser import HTMLParser
+    from urllib.request import Request, urlopen
+    from urllib.error import URLError, HTTPError
+
+    # Minimal HTML text extractor that skips script/style/noscript content
+    class _TextExtractor(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self._skip_depth = 0
+            self._skip_tags = {"script", "style", "noscript"}
+            self.chunks = []
+
+        def handle_starttag(self, tag, attrs):
+            if tag in self._skip_tags:
+                self._skip_depth += 1
+
+        def handle_endtag(self, tag):
+            if tag in self._skip_tags and self._skip_depth > 0:
+                self._skip_depth -= 1
+
+        def handle_data(self, data):
+            if self._skip_depth == 0 and data:
+                self.chunks.append(data)
+
+    # Default English stopwords (lowercase). You can pass your own via the stopwords argument.
+    default_stopwords = {
+        'a','about','above','after','again','against','all','am','an','and','any','are','as','at','be','because','been',
+        'before','being','below','between','both','but','by','can','could','did','do','does','doing','down','during',
+        'each','few','for','from','further','had','has','have','having','he','her','here','hers','herself','him',
+        'himself','his','how','i','if','in','into','is','it','its','itself','just','me','more','most','my','myself',
+        'no','nor','not','now','of','off','on','once','only','or','other','our','ours','ourselves','out','over','own',
+        'same','she','should','so','some','such','than','that','the','their','theirs','them','themselves','then',
+        'there','these','they','this','those','through','to','too','under','until','up','very','was','we','were',
+        'what','when','where','which','while','who','whom','why','will','with','you','your','yours','yourself',
+        'yourselves','shall'
+    }
+    sw = set(stopwords) if stopwords is not None else default_stopwords
+
+    # Fetch page
+    try:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0 (compatible; WordCounterBot/1.0)"})
+        with urlopen(req, timeout=15) as resp:
+            raw = resp.read()
+            # Try to detect encoding from headers; fallback to utf-8
+            encoding = resp.headers.get_content_charset() or "utf-8"
+            html = raw.decode(encoding, errors="replace")
+    except (HTTPError, URLError, TimeoutError) as e:
+        raise RuntimeError(f"Failed to fetch URL: {e}") from e
+    except Exception as e:
+        raise RuntimeError(f"Unexpected error fetching URL: {e}") from e
+
+    # Extract visible text
+    parser = _TextExtractor()
+    try:
+        parser.feed(html)
+    except Exception as e:
+        # In case of malformed HTML, still use collected chunks
+        pass
+    text = " ".join(parser.chunks)
+
+    # Tokenize: collect word-like tokens, normalize, and filter
+    # Keep unicode word characters and apostrophes, then filter to alphabetic tokens
+    tokens = re.findall(r"[\w']+", text.casefold(), flags=re.UNICODE)
+    cleaned = []
+    for t in tokens:
+        t = t.strip("'")  # remove leading/trailing apostrophes
+        # Keep alphabetic-only tokens (supports unicode letters via isalpha)
+        if t and t.isalpha() and len(t) > 1 and t not in sw:
+            cleaned.append(t)
+
+    counts = Counter(cleaned)
+    # Sort by frequency desc, then alphabetically for stable ties
+    top = counts.most_common()
+    top.sort(key=lambda x: (-x[1], x[0]))
+    return top[:top_n]
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+----------------------------------------------------------------------
+--- SYNTHESIZED RESPONSE (using gpt-4o) ---
+```python
+def top_5_common_words(url, top_n=5, stopwords=None):
+    """
+    Fetches the page at `url` and returns the top `top_n` most common words as a list of (word, count) tuples using only the Python standard library.
+
+    Args:
+        url (str): The URL of the web page to analyze.
+        top_n (int): Number of top words to return. Default is 5.
+        stopwords (set[str] | None): Optional custom stopword set (lowercase). If None, a default English set is used.
+
+    Returns:
+        list[tuple[str, int]]: List of (word, count) sorted by descending frequency, then alphabetically.
+    """
+    import re
+    from collections import Counter
+    from html.parser import HTMLParser
+    from urllib.request import Request, urlopen
+    from urllib.error import URLError, HTTPError
+
+    class _TextExtractor(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self._skip_depth = 0
+            self._skip_tags = {"script", "style", "noscript"}
+            self.chunks = []
+
+        def handle_starttag(self, tag, attrs):
+            if tag in self._skip_tags:
+                self._skip_depth += 1
+
+        def handle_endtag(self, tag):
+            if tag in self._skip_tags and self._skip_depth > 0:
+                self._skip_depth -= 1
+
+        def handle_data(self, data):
+            if self._skip_depth == 0 and data:
+                self.chunks.append(data)
+
+    default_stopwords = {
+        'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'as', 'at', 'be', 
+        'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 'can', 'could', 'did', 'do', 
+        'does', 'doing', 'down', 'during', 'each', 'few', 'for', 'from', 'further', 'had', 'has', 'have', 'having', 
+        'he', 'her', 'here', 'hers', 'herself', 'him', 'himself', 'his', 'how', 'i', 'if', 'in', 'into', 'is', 'it', 
+        'its', 'itself', 'just', 'me', 'more', 'most', 'my', 'myself', 'no', 'nor', 'not', 'now', 'of', 'off', 'on', 
+        'once', 'only', 'or', 'other', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 'same', 'she', 'should', 
+        'so', 'some', 'such', 'than', 'that', 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there', 'these', 
+        'they', 'this', 'those', 'through', 'to', 'too', 'under', 'until', 'up', 'very', 'was', 'we', 'were', 'what', 
+        'when', 'where', 'which', 'while', 'who', 'whom', 'why', 'will', 'with', 'you', 'your', 'yours', 'yourself', 
+        'yourselves', 'shall'
+    }
+    sw = set(stopwords) if stopwords is not None else default_stopwords
+
+    try:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req, timeout=15) as resp:
+            raw = resp.read()
+            encoding = resp.headers.get_content_charset() or "utf-8"
+            html = raw.decode(encoding, errors="replace")
+    except (HTTPError, URLError, TimeoutError) as e:
+        raise RuntimeError(f"Failed to fetch URL: {e}") from e
+    except Exception as e:
+        raise RuntimeError(f"Unexpected error fetching URL: {e}") from e
+
+    parser = _TextExtractor()
+    try:
+        parser.feed(html)
+    except Exception:
+        pass
+    text = " ".join(parser.chunks)
+
+    tokens = re.findall(r"[\w']+", text.casefold(), flags=re.UNICODE)
+    cleaned = [t.strip("'") for t in tokens if t.isalpha() and len(t) > 1 and t not in sw]
+
+    counts = Counter(cleaned)
+    top = counts.most_common()
+    top.sort(key=lambda x: (-x[1], x[0]))
+    return top[:top_n]
+```

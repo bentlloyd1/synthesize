@@ -1,0 +1,19 @@
+{
+  "name": "model-combiner-script",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "csv-writer": "^1.6.0",
+    "dotenv": "^17.2.2",
+    "openai": "^5.20.2",
+    "ora": "^8.2.0"
+  }
+}

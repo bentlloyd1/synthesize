@@ -1,0 +1,478 @@
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Factual Pipeline (SOTA Base -> Quick Synth)
+## FALLBACK TRIGGERED: FALLBACK: Gemini base failed. Refining GPT-5 response.
+######################################################################
+======================================================================
+== PROMPT: asdf
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+It looks like you typed “asdf.” How can I help today?
+
+Some things I can do:
+- Answer questions or explain a concept
+- Summarize or rewrite text
+- Draft emails, messages, or posts
+- Brainstorm ideas or outlines
+- Help with coding or debugging
+- Translate or proofread
+
+Tell me what you’d like to do, or paste what you’re working on.
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+----------------------------------------------------------------------
+--- FINAL RESPONSE (using gpt-4o) ---
+It seems you've typed "asdf." How can I assist you today? Here are some things I can help you with:
+
+- Answering questions or clarifying concepts
+- Summarizing or rewriting content
+- Drafting emails, messages, or social media posts
+- Brainstorming ideas or creating outlines
+- Assisting with coding or debugging issues
+- Translating languages or proofreading text
+
+Let me know what you need assistance with, or feel free to share the details of your current task.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Factual Pipeline (SOTA Base -> Quick Synth)
+## FALLBACK TRIGGERED: FALLBACK: Gemini base failed. Refining GPT-5 response.
+######################################################################
+======================================================================
+== PROMPT: Explain the concept of 'technical debt' without using any analogies.
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+Technical debt is the accumulated cost of earlier technical decisions that make future changes harder, riskier, slower, or more expensive. It arises when a system’s design, code, tests, tooling, or processes fall short of current and foreseeable needs.
+
+Common sources
+- Time pressure leading to minimal designs, missing tests, or skipped reviews
+- Requirements changing after initial implementation
+- Gaps in skills, standards, or consistency across teams
+- Outdated libraries, frameworks, or platforms
+- Partial migrations or unfinished cleanups
+- Limited automation in builds, testing, or releases
+- Insufficient documentation and knowledge sharing
+
+Typical forms
+- Code-level: duplication, high complexity, long functions, weak naming, tight coupling
+- Architecture: unclear boundaries, shared mutable state, circular dependencies, sparse modularity
+- Testing/quality: low or brittle test coverage, flaky tests, weak assertions
+- Delivery: manual releases, slow or unreliable CI/CD, hard rollbacks
+- Security: unresolved vulnerabilities, hardcoded secrets, weak auth/z
+- Data: brittle schemas, missing migrations, manual data fixes
+- Documentation/process: outdated docs, reliance on tribal knowledge
+
+Impacts
+- Slower delivery and higher effort for even small changes
+- More defects and regressions; harder debugging
+- Reduced reliability and security posture
+- Longer onboarding time and lower team morale
+- Unpredictable schedules and increased operational load
+
+Detection and measurement
+- Static analysis: complexity, duplication, lint violations
+- Test signals: coverage, flakiness, mean time to diagnose failures
+- Delivery metrics: lead time, deployment frequency, change failure rate
+- Operational metrics: incidents, SLO/SLA misses, MTTR
+- Code hotspots: files frequently changed and highly complex
+- Qualitative input: engineer surveys, review feedback, incident postmortems
+
+Management strategies
+- Make it visible: track items with location, impact, and effort
+- Prioritize by value and risk: focus on hotspots, security issues, and items that block key work
+- Prevent new issues: coding standards, reviews, pair programming, solid “definition of done,” training
+- Reduce existing issues:
+  - Targeted refactoring with safety via tests
+  - Improve modularity and boundaries
+  - Add or harden tests and observability
+  - Upgrade or replace outdated dependencies and platforms
+  - Automate builds, tests, deployments, and rollbacks
+  - Delete dead code and retire unused features
+- Plan and govern: set quality gates in CI, schedule regular upgrades, maintain architecture decisions, and audit periodically
+- Verify outcomes: measure before/after effects on speed, stability, and defect rates
+
+Decision guidance
+- Accept short-term compromises only with a clear rationale, scope, and a concrete cleanup plan
+- Keep issues small and localized to avoid compounding effects
+- Prioritize fixes when they block important features, create significant risk, or consume recurring time each iteration
+
+In short, technical debt is the gap between the current state of a system and a state that would support efficient, safe, and predictable change. Managing it is an ongoing, explicit part of engineering work.
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+----------------------------------------------------------------------
+--- FINAL RESPONSE (using gpt-4o) ---
+Technical debt refers to the future costs and difficulties that arise from past technical decisions in software systems. These decisions, often made to meet immediate needs or due to constraints, can lead to complications over time by making future modifications more challenging, costly, and time-consuming.
+
+**Sources of Technical Debt:**
+
+1. **Time Constraints:** Quick fixes and shortcuts due to tight deadlines.
+2. **Changing Requirements:** Evolving needs not aligned with initial designs.
+3. **Skill Gaps:** Inconsistent skills and standards across teams.
+4. **Outdated Technology:** Use of obsolete libraries or tools.
+5. **Incomplete Processes:** Partial updates or neglected maintenance tasks.
+6. **Lack of Automation:** Manual processes in building, testing, or releasing software.
+7. **Poor Documentation:** Insufficient or outdated information sharing.
+
+**Forms of Technical Debt:**
+
+- **Code Level:** Duplicate code, complex logic, lengthy functions, poor naming, tightly coupled systems.
+- **Architecture Issues:** Vague module boundaries, shared states, dependencies, and lack of modularity.
+- **Testing Deficiencies:** Low test coverage, unstable tests, weak validation.
+- **Delivery Shortcomings:** Manual deployments, unreliable release pipelines.
+- **Security Weaknesses:** Unaddressed vulnerabilities, hardcoded credentials.
+- **Data Concerns:** Fragile data structures, missing updates.
+- **Documentation and Process:** Dependence on internal expertise without proper documentation.
+
+**Impacts of Technical Debt:**
+
+- Slows down delivery and complicates quick changes.
+- Increases defects and makes debugging harder.
+- Decreases system reliability and security.
+- Lengthens onboarding times and affects team morale.
+- Leads to unpredictable project timelines and heavy operational demands.
+
+**Detection and Measurement:**
+
+- **Static Analysis:** Identifies complexity and code violations.
+- **Testing Metrics:** Examines coverage and reliability of tests.
+- **Delivery Metrics:** Monitors lead times and failure rates.
+- **Operational Metrics:** Tracks incident frequencies and resolution times.
+- **Hotspot Analysis:** Identifies frequently changed, complex code areas.
+- **Input from Engineers:** Gathers insights from team feedback and postmortem reports.
+
+**Management Strategies:**
+
+- **Visibility:** Maintain a record of issues, noting their impact and needed effort.
+- **Prioritization:** Focus on resolving high-impact areas and security risks.
+- **Prevention:** Implement coding standards, conduct regular code reviews, and ensure thorough testing.
+- **Reduction Tactics:** Conduct safe refactoring, enhance modularity, improve testing and observability, upgrade dependencies, and automate processes.
+- **Governance:** Set quality controls, plan for regular system updates, and regularly audit system performance.
+- **Outcome Verification:** Measure improvements in system performance and stability.
+
+**Decision Guidelines:**
+
+- Accept short-term compromises only with plans for resolution.
+- Limit the scope of debt issues to avoid worsening complexity.
+- Prioritize remediation when important features are blocked or when there are significant risks.
+
+In essence, technical debt represents the gap between a system's current state and a more efficient, reliable, and adaptable future state. Effectively managing it is a crucial, ongoing aspect of software engineering responsibilities.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Creative Pipeline (SOTA Base -> SOTA Synth)
+## FALLBACK TRIGGERED: FALLBACK: Gemini base failed. Refining GPT-5 response. FALLBACK: Synthesis step failed; returning GPT-5 base.
+######################################################################
+======================================================================
+== PROMPT: Write a short, suspenseful story that starts with the line: 'The old clock chimed thirteen times.'
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+The old clock chimed thirteen times.
+
+I counted them in bed, thinking the first was a dream, the second a memory echoing off the rafters, the third an old grief in a new house. By the tenth, I was sitting up, the covers clenched in my fists, every knuckle pale. Twelve had never taken so long to arrive. Thirteen fell into the room like a stone dropped into a well that had no bottom.
+
+Aunt Eliza’s house had been quiet for weeks—quiet as it had never been when she was alive. It was a practical quiet. The refrigerator hummed, the floorboards spoke their old language when I crossed the hallway; the wind tested the windows but never got in. The grandfather clock in the front hall had not chimed since I was a child. It was a tall and sullen thing, swaddled in dust and old polish, with a face that had always seemed to watch without seeing. “It knows what it owes,” Eliza had said once, a half-smile gone before it had time to be a smile at all. “We don’t wind it. We don’t encourage what wants to be noticed.”
+
+I hadn’t wound it. I still hadn’t. But the sound had happened anyway.
+
+I slid my feet to the floor. The air had a taste to it, a metallic hint like nicked fingers. The short hallway to the stairs seemed longer than it had any right to be. On the walls, black-and-white family photographs followed me in their frames. For company, I whispered the names I had learned from the backs of those frames: a great-grandfather with a barrel chest and prize tomatoes; a cousin who ran off with a jazz band and sent back no letters; Eliza at seventeen, standing where the clock stood now and looking a little to the side, as if the camera had been too small to hold everything she saw.
+
+In the front hall, the clock’s face gleamed the way eyes do when a lamp is lifted suddenly in a dark room. Its hands lay on twelve, meeting like fingers steepled in thought. The pendulum swung slow and sure, cutting a fat silver slice out of the air with every pass. Dust had drawn lazy gray curtains over everything else in the house, but the clock’s case wore a clean line where the pendulum had been traveling, a polished curve cutting through the neglect.
+
+“It hasn’t worked in years,” I told it. My voice sounded borrowed.
+
+The phone in my pocket read 12:00. When I looked again, it said 12:00 still, and then 12:01, and then something my mind refused to read properly. For a moment—just a moment—the numbers arranged themselves into 12:60, like an address you take down wrong and drive to anyway.
+
+“Ridiculous,” I whispered, and the house heard me, because the refrigerator hum stopped and the wind withdrew and even the pipes in the walls decided against shifting their knees. What moved was somewhere above me. A footstep, not a creak. Then another. Then a pause that felt like someone listening back.
+
+Aunt Eliza’s attic door liked to stick. I had learned its particular tug yesterday when I boxed up her hatpins and furs—rich smells of lavender and mothball and a laughter I hadn’t earned. Tonight, the door at the top of the stairs stood ajar like a surprised mouth. I counted steps as I went up. There were twelve, there had always been twelve. Tonight, thirteen. My foot found the extra one without looking. The shape of it was wrong, too shallow, as if it had been drawn on.
+
+The attic greeted me with the cool of old paper and dust as fine as flour. The moon flattened itself against the dormer windows and made everything chalk. The mirror under its sheet was impossible to ignore. Aunt Eliza had kept it covered and had switched the cloth every spring, even when her hands shook. “It catches what it shouldn’t,” she’d said, diverting me with a plate of lemon cookies. “We’re not that kind of people, Mara.”
+
+I pulled the sheet off because I am not that kind of person either, the kind that listens to warnings when they were spoken as jokes.
+
+My reflection was there, quick as a thrown coin in water. It returned my stare a beat late. Behind me, the attic made a different kind of sense. In the mirror, the dormer window seemed a fraction narrower; the boxes had settled into slightly different arrangements; the string that pulled the attic light had a knot mine didn’t have. A small brass key lay on the table in the reflection’s world, catching the mirror-moon. There was no key on the table behind me.
+
+Pinned to the mirror’s corner was a piece of paper I didn’t remember pinning, and the pin was one of Eliza’s hatpins, pearl-headed, eyes white and blind. The note was written in her tight hand, slanted like rain.
+
+If it grants what it does not have, it will take what you do. Do not spend what you can’t afford.
+
+“I didn’t ask,” I started, and heard my voice from the hall below, smaller with distance, saying lonely words to an empty room: “I just need more time.”
+
+I had said it earlier, with my palm on the clock’s grain, the way you put your hand on a pet’s side to feel the heart and decide that the rhythm is a kind of mercy. I had meant only tonight. One more hour to sort the papers, to decide which letters to keep, which to destroy. One more hour to sit on the dusty rug and imagine that Eliza would come down in her slippers, say she couldn’t sleep either, make us tea, tell me where the missing kitchen chair went in 1979 and whether the cousin in the jazz band ever called. One more hour was little enough to ask. It was everything.
+
+From downstairs, the clock made a small sound, the soft click of a lock turning.
+
+In the mirror, my reflection lifted the brass key. She looked over her shoulder with my face and did not meet my eyes. I heard the hinge of the clock’s case open below, though I was above it and had not moved. When I stepped toward the mirror and put my fingertip to the glass, it was not cool. It felt like the back of someone’s hand after they have come in from the cold.
+
+“Don’t,” Eliza’s script said, as if the pin the note was hanging from were the tail of a thought that she had been saving for me and hoped never to spend. The pendulum’s hush-swing-hush seemed louder now, as if it had moved into the next room over and brought its own wind.
+
+I ran.
+
+The stair that had not been there was there again. I stumbled over it, swung wide on the banister, knees banging wood. The hallway had lengthened while I had been upstairs. The photographs on the walls had crisped and darkened, as if someone had restocked the frames with new seconds. In each, there was a smear of something that had not been in them yesterday: a pale shape at the edge of a picnic; a blur at the back of a wedding line, where the best man’s grin had always been a little too wide; in Eliza-at-seventeen, a sliver of shoulder beside hers that cast no shadow.
+
+The clock’s case was open.
+
+Inside, the world went tight, all brass and teeth. Gears turned like insects, each kissing the next, the kiss that makes a machine. The pendulum was heavier than it looked; when I caught it, it pulled my arm the way a river does. Every tick had a shape, a roundness. I pushed back, hard. Tick, space, tick, space, then—space.
+
+Silence came like water poured over a flame. The smell of nickel sweetened and slid away. The photographs came loose in their frames as if paper had decided to be paper again. Upstairs, I heard the attic’s window gutter sigh, the air deciding the night was over and could go back to whatever it had been doing.
+
+“I don’t owe you,” I told the clock, breathless and foolish with the adrenaline that follows disaster when disaster decides you can have a few more minutes. “I didn’t mean it. I can pay.”
+
+It was almost funny, then, how much it felt like a victory, how simple. The pendulum sat warm and compliant in my hand. I could hold it forever, if forever were this.
+
+Somewhere—not in the hall, not in the attic, perhaps not in the house—the chime sounded. Not the deep bronze of before, but thin and far, as if the idea of a chime had been carried a long way and lost some of its color on the trip.
+
+One.
+
+My phone, on the table where I had left it, flashed a new time and then refused to hold it. The second chime found a path through the walls. The third came from the mirror upstairs. The fourth made the key I did not have glance against a surface I was not touching. The fifth came from inside the clock, but not from its mouth; it came from deeper, where my fingers were, where the pendulum met the heart.
+
+I couldn’t hold it anymore. I knew it as you know rain is coming by the weight of the air. The pendulum did not fight me. It did not move. The part of the house that had been listening leaned closer.
+
+The sixth was the sound of my name spoken by someone who had tried it on first and found it fit.
+
+I had stopped the pendulum. I had not stopped the hour.
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+----------------------------------------------------------------------
+--- FALLBACK RESPONSE (using gemini-2.5-pro) ---
+The old clock chimed thirteen times.
+
+I counted them in bed, thinking the first was a dream, the second a memory echoing off the rafters, the third an old grief in a new house. By the tenth, I was sitting up, the covers clenched in my fists, every knuckle pale. Twelve had never taken so long to arrive. Thirteen fell into the room like a stone dropped into a well that had no bottom.
+
+Aunt Eliza’s house had been quiet for weeks—quiet as it had never been when she was alive. It was a practical quiet. The refrigerator hummed, the floorboards spoke their old language when I crossed the hallway; the wind tested the windows but never got in. The grandfather clock in the front hall had not chimed since I was a child. It was a tall and sullen thing, swaddled in dust and old polish, with a face that had always seemed to watch without seeing. “It knows what it owes,” Eliza had said once, a half-smile gone before it had time to be a smile at all. “We don’t wind it. We don’t encourage what wants to be noticed.”
+
+I hadn’t wound it. I still hadn’t. But the sound had happened anyway.
+
+I slid my feet to the floor. The air had a taste to it, a metallic hint like nicked fingers. The short hallway to the stairs seemed longer than it had any right to be. On the walls, black-and-white family photographs followed me in their frames. For company, I whispered the names I had learned from the backs of those frames: a great-grandfather with a barrel chest and prize tomatoes; a cousin who ran off with a jazz band and sent back no letters; Eliza at seventeen, standing where the clock stood now and looking a little to the side, as if the camera had been too small to hold everything she saw.
+
+In the front hall, the clock’s face gleamed the way eyes do when a lamp is lifted suddenly in a dark room. Its hands lay on twelve, meeting like fingers steepled in thought. The pendulum swung slow and sure, cutting a fat silver slice out of the air with every pass. Dust had drawn lazy gray curtains over everything else in the house, but the clock’s case wore a clean line where the pendulum had been traveling, a polished curve cutting through the neglect.
+
+“It hasn’t worked in years,” I told it. My voice sounded borrowed.
+
+The phone in my pocket read 12:00. When I looked again, it said 12:00 still, and then 12:01, and then something my mind refused to read properly. For a moment—just a moment—the numbers arranged themselves into 12:60, like an address you take down wrong and drive to anyway.
+
+“Ridiculous,” I whispered, and the house heard me, because the refrigerator hum stopped and the wind withdrew and even the pipes in the walls decided against shifting their knees. What moved was somewhere above me. A footstep, not a creak. Then another. Then a pause that felt like someone listening back.
+
+Aunt Eliza’s attic door liked to stick. I had learned its particular tug yesterday when I boxed up her hatpins and furs—rich smells of lavender and mothball and a laughter I hadn’t earned. Tonight, the door at the top of the stairs stood ajar like a surprised mouth. I counted steps as I went up. There were twelve, there had always been twelve. Tonight, thirteen. My foot found the extra one without looking. The shape of it was wrong, too shallow, as if it had been drawn on.
+
+The attic greeted me with the cool of old paper and dust as fine as flour. The moon flattened itself against the dormer windows and made everything chalk. The mirror under its sheet was impossible to ignore. Aunt Eliza had kept it covered and had switched the cloth every spring, even when her hands shook. “It catches what it shouldn’t,” she’d said, diverting me with a plate of lemon cookies. “We’re not that kind of people, Mara.”
+
+I pulled the sheet off because I am not that kind of person either, the kind that listens to warnings when they were spoken as jokes.
+
+My reflection was there, quick as a thrown coin in water. It returned my stare a beat late. Behind me, the attic made a different kind of sense. In the mirror, the dormer window seemed a fraction narrower; the boxes had settled into slightly different arrangements; the string that pulled the attic light had a knot mine didn’t have. A small brass key lay on the table in the reflection’s world, catching the mirror-moon. There was no key on the table behind me.
+
+Pinned to the mirror’s corner was a piece of paper I didn’t remember pinning, and the pin was one of Eliza’s hatpins, pearl-headed, eyes white and blind. The note was written in her tight hand, slanted like rain.
+
+If it grants what it does not have, it will take what you do. Do not spend what you can’t afford.
+
+“I didn’t ask,” I started, and heard my voice from the hall below, smaller with distance, saying lonely words to an empty room: “I just need more time.”
+
+I had said it earlier, with my palm on the clock’s grain, the way you put your hand on a pet’s side to feel the heart and decide that the rhythm is a kind of mercy. I had meant only tonight. One more hour to sort the papers, to decide which letters to keep, which to destroy. One more hour to sit on the dusty rug and imagine that Eliza would come down in her slippers, say she couldn’t sleep either, make us tea, tell me where the missing kitchen chair went in 1979 and whether the cousin in the jazz band ever called. One more hour was little enough to ask. It was everything.
+
+From downstairs, the clock made a small sound, the soft click of a lock turning.
+
+In the mirror, my reflection lifted the brass key. She looked over her shoulder with my face and did not meet my eyes. I heard the hinge of the clock’s case open below, though I was above it and had not moved. When I stepped toward the mirror and put my fingertip to the glass, it was not cool. It felt like the back of someone’s hand after they have come in from the cold.
+
+“Don’t,” Eliza’s script said, as if the pin the note was hanging from were the tail of a thought that she had been saving for me and hoped never to spend. The pendulum’s hush-swing-hush seemed louder now, as if it had moved into the next room over and brought its own wind.
+
+I ran.
+
+The stair that had not been there was there again. I stumbled over it, swung wide on the banister, knees banging wood. The hallway had lengthened while I had been upstairs. The photographs on the walls had crisped and darkened, as if someone had restocked the frames with new seconds. In each, there was a smear of something that had not been in them yesterday: a pale shape at the edge of a picnic; a blur at the back of a wedding line, where the best man’s grin had always been a little too wide; in Eliza-at-seventeen, a sliver of shoulder beside hers that cast no shadow.
+
+The clock’s case was open.
+
+Inside, the world went tight, all brass and teeth. Gears turned like insects, each kissing the next, the kiss that makes a machine. The pendulum was heavier than it looked; when I caught it, it pulled my arm the way a river does. Every tick had a shape, a roundness. I pushed back, hard. Tick, space, tick, space, then—space.
+
+Silence came like water poured over a flame. The smell of nickel sweetened and slid away. The photographs came loose in their frames as if paper had decided to be paper again. Upstairs, I heard the attic’s window gutter sigh, the air deciding the night was over and could go back to whatever it had been doing.
+
+“I don’t owe you,” I told the clock, breathless and foolish with the adrenaline that follows disaster when disaster decides you can have a few more minutes. “I didn’t mean it. I can pay.”
+
+It was almost funny, then, how much it felt like a victory, how simple. The pendulum sat warm and compliant in my hand. I could hold it forever, if forever were this.
+
+Somewhere—not in the hall, not in the attic, perhaps not in the house—the chime sounded. Not the deep bronze of before, but thin and far, as if the idea of a chime had been carried a long way and lost some of its color on the trip.
+
+One.
+
+My phone, on the table where I had left it, flashed a new time and then refused to hold it. The second chime found a path through the walls. The third came from the mirror upstairs. The fourth made the key I did not have glance against a surface I was not touching. The fifth came from inside the clock, but not from its mouth; it came from deeper, where my fingers were, where the pendulum met the heart.
+
+I couldn’t hold it anymore. I knew it as you know rain is coming by the weight of the air. The pendulum did not fight me. It did not move. The part of the house that had been listening leaned closer.
+
+The sixth was the sound of my name spoken by someone who had tried it on first and found it fit.
+
+I had stopped the pendulum. I had not stopped the hour.
+
+
+######################################################################
+## DYNAMICALLY ROUTED TO: Factual Pipeline (SOTA Base -> Quick Synth)
+## FALLBACK TRIGGERED: FALLBACK: Gemini base failed. Refining GPT-5 response.
+######################################################################
+======================================================================
+== PROMPT: Generate a Python function that takes a URL and returns the top 5 most common words on the page.
+======================================================================
+--- MODEL A (gpt-5) RESPONSE ---
+```python
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+from html.parser import HTMLParser
+from collections import Counter
+import re
+
+
+# Minimal English stopword list to make results more meaningful.
+_STOPWORDS = {
+    "the","and","to","of","a","in","is","it","for","on","that","with","as",
+    "are","was","be","by","this","from","at","or","an","have","has","had",
+    "not","but","we","you","your","they","their","i","he","she","his","her",
+    "its","our","us","them","were","will","can","would","there","what","when",
+    "which","who","about","one","all","also","more","if","no","so","up","out",
+    "into","do","does","did","than","then","may","such","only","other","some",
+    "any","new","how","over"
+}
+
+
+class _TextExtractor(HTMLParser):
+    """Extracts visible text from HTML, skipping script/style/noscript/template."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self._buffer = []
+        self._skip_depth = 0
+        self._skip_tags = {"script", "style", "noscript", "template"}
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self._skip_tags:
+            self._skip_depth += 1
+
+    def handle_endtag(self, tag):
+        if tag in self._skip_tags and self._skip_depth:
+            self._skip_depth -= 1
+
+    def handle_data(self, data):
+        if self._skip_depth == 0 and data:
+            self._buffer.append(data)
+
+    def text(self):
+        return " ".join(self._buffer)
+
+
+def top_5_words_from_url(url):
+    """
+    Fetches the page at `url`, extracts text, and returns the top 5 most common words
+    as a list of (word, count) tuples. Common English stopwords are removed.
+
+    Raises:
+        ValueError: if the URL cannot be fetched.
+    """
+    # Fetch HTML (use a browser-like User-Agent; set a timeout).
+    try:
+        req = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(req, timeout=15) as resp:
+            content_type = resp.headers.get("Content-Type", "")
+            charset_match = re.search(r"charset=([^\s;]+)", content_type, re.I)
+            charset = charset_match.group(1) if charset_match else "utf-8"
+            html = resp.read().decode(charset, errors="ignore")
+    except (HTTPError, URLError, TimeoutError) as e:
+        raise ValueError(f"Failed to fetch {url}: {e}") from e
+
+    # Extract visible text.
+    parser = _TextExtractor()
+    parser.feed(html)
+    text = parser.text().lower()
+
+    # Tokenize into words (ASCII letters; keep simple English words like "don't").
+    tokens = re.findall(r"[a-z]+(?:'[a-z]+)?", text)
+
+    # Remove stopwords and very short tokens (e.g., single letters).
+    words = [w for w in tokens if w not in _STOPWORDS and len(w) > 1]
+
+    counts = Counter(words).most_common(5)
+    return counts
+```
+----------------------------------------------------------------------
+--- MODEL B (gemini-2.5-pro) RESPONSE ---
+ERROR from Google AI: [GoogleGenerativeAI Error]: Error fetching from https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-pro:generateContent: [503 Service Unavailable] The model is overloaded. Please try again later.
+----------------------------------------------------------------------
+--- FINAL RESPONSE (using gpt-4o) ---
+```python
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+from html.parser import HTMLParser
+from collections import Counter
+import re
+
+# Define common English stopwords to filter out often used but uninformative words.
+_STOPWORDS = {
+    "the", "and", "to", "of", "a", "in", "is", "it", "for", "on", "that", "with",
+    "as", "are", "was", "be", "by", "this", "from", "at", "or", "an", "have",
+    "has", "had", "not", "but", "we", "you", "your", "they", "their", "i", "he",
+    "she", "his", "her", "its", "our", "us", "them", "were", "will", "can",
+    "would", "there", "what", "when", "which", "who", "about", "one", "all",
+    "also", "more", "if", "no", "so", "up", "out", "into", "do", "does", "did",
+    "than", "then", "may", "such", "only", "other", "some", "any", "new", "how",
+    "over"
+}
+
+class TextExtractor(HTMLParser):
+    """HTMLParser subclass to extract visible text from an HTML page, ignoring script and style content."""
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.buffer = []
+        self.skip_depth = 0
+        self.skip_tags = {"script", "style", "noscript", "template"}
+
+    def handle_starttag(self, tag, attrs):
+        if tag in self.skip_tags:
+            self.skip_depth += 1
+
+    def handle_endtag(self, tag):
+        if tag in self.skip_tags and self.skip_depth > 0:
+            self.skip_depth -= 1
+
+    def handle_data(self, data):
+        if self.skip_depth == 0 and data.strip():
+            self.buffer.append(data)
+
+    def get_text(self):
+        return " ".join(self.buffer)
+
+def top_5_words_from_url(url):
+    """
+    Fetch the HTML content of a URL, extract visible text, and return the five most common words.
+    
+    Parameters:
+        url (str): The URL from which to fetch and analyze the content.
+
+    Returns:
+        list of tuples: A list of the top five most common words and their counts as (word, count).
+
+    Raises:
+        ValueError: Raised if there are issues fetching or reading the URL.
+    """
+    try:
+        request = Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urlopen(request, timeout=15) as response:
+            content_type = response.headers.get("Content-Type", "")
+            charset_match = re.search(r"charset=([^\s;]+)", content_type, re.I)
+            charset = charset_match.group(1) if charset_match else "utf-8"
+            html_content = response.read().decode(charset, errors="ignore")
+    except (HTTPError, URLError, TimeoutError) as error:
+        raise ValueError(f"Failed to fetch URL {url}: {error}")
+
+    # Extract visible text from the HTML content.
+    parser = TextExtractor()
+    parser.feed(html_content)
+    text = parser.get_text().lower()
+
+    # Tokenize text into words, considering words with ASCII letters and apostrophes.
+    tokens = re.findall(r"[a-z]+(?:'[a-z]+)?", text)
+
+    # Filter out stopwords and one-letter words.
+    filtered_words = [word for word in tokens if word not in _STOPWORDS and len(word) > 1]
+
+    # Determine the five most common words from the filtered list.
+    most_common_words = Counter(filtered_words).most_common(5)
+    return most_common_words
+```
