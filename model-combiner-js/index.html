@@ -3,118 +3,412 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Model Synthesizer</title>
+    <title>AI Model Combiner</title>
     <style>
-        body { font-family: sans-serif; margin: 2em; background-color: #f4f4f9; }
-        .container { max-width: 1200px; margin: auto; }
-        textarea, select { width: 100%; font-size: 16px; padding: 10px; box-sizing: border-box; margin-bottom: 1em; }
-        button { font-size: 16px; padding: 10px 20px; cursor: pointer; }
-        .results { display: grid; grid-template-columns: 1fr 1fr; gap: 2em; margin-top: 2em; }
-        .card { background: white; padding: 1.5em; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        #final-response { grid-column: 1 / -1; }
-        #final-response.gpt-border { border: 2px solid #10a37f; }
-        #final-response.gemini-border { border: 2px solid #4285F4; }
-        h2 { border-bottom: 2px solid #eee; padding-bottom: 0.5em; }
-        #spinner { display: none; margin: 1em 0; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --primary-blue: #0d6efd;
+            --light-blue: #eef7ff;
+            --border-blue: #d0e8ff;
+            --dark-blue: #00529b;
+            --light-gray: #f8f9fa;
+            --border-gray: #dee2e6;
+            --text-dark: #212529;
+            --text-light: #6c757d;
+            --warning-bg: #fff3cd;
+            --warning-border: #ffeeba;
+            --warning-text: #856404;
+        }
+
+        body { 
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            margin: 0; 
+            background-color: var(--light-gray);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+        }
+
+        .container { 
+            max-width: 1200px; 
+            margin: 2em; 
+            width: 100%; 
+        }
+
+        h1 { 
+            color: var(--text-dark);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        #prompt-form { 
+            background: #fff; 
+            padding: 2em; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+            border: 1px solid var(--border-gray);
+        }
+
+        textarea, input[type="text"] { 
+            width: 100%; 
+            font-size: 16px; 
+            padding: 14px; 
+            box-sizing: border-box; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-gray);
+            background-color: #fdfdff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        textarea:focus, input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+        }
+
+        textarea { 
+            min-height: 140px; 
+            resize: vertical; 
+        }
+
+        label { 
+            font-weight: 600; 
+            color: var(--text-dark); 
+            font-size: 1em; 
+            display: block; 
+            margin-top: 1em; 
+            margin-bottom: 0.5em; 
+        }
+
+        button { 
+            font-size: 16px; 
+            font-weight: 600;
+            padding: 14px 28px; 
+            cursor: pointer; 
+            border-radius: 8px; 
+            border: none; 
+            background-color: var(--primary-blue); 
+            color: white; 
+            transition: background-color 0.2s, transform 0.1s;
+            margin-top: 1em;
+            width: 100%;
+        }
+        button:hover:not(:disabled) {
+            background-color: #0b5ed7;
+            transform: translateY(-1px);
+        }
+        button:disabled { 
+            background-color: #ccc; 
+            cursor: not-allowed; 
+        }
+
+        .results-grid { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 2em; 
+            margin-top: 2em; 
+        }
+
+        .card { 
+            background: white; 
+            padding: 1.5em; 
+            border-radius: 16px; 
+            box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+            border: 1px solid var(--border-gray);
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        #final-response-card { 
+            grid-column: 1 / -1; 
+            border: 2px solid var(--primary-blue); 
+        }
+
+        h2 { 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 0.5em; 
+            margin-top: 0; 
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .status-area { 
+            margin-top: 1.5em; 
+            text-align: center; 
+            min-height: 60px; /* Reserve space to prevent layout shift */
+        }
+        .spinner { 
+            display: none; 
+            margin: 1em auto; 
+            width: 32px; 
+            height: 32px; 
+            border: 4px solid #f3f3f3; 
+            border-top: 4px solid var(--primary-blue); 
+            border-radius: 50%; 
+            animation: spin 1s linear infinite; 
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        
+        #status-text { 
+            font-style: italic; 
+            color: var(--text-light); 
+        }
+
+        .info-banner { display: none; padding: 1em; margin-top: 2em; border-radius: 8px; font-size: 0.9em; }
+        #fallback-alert { background-color: var(--warning-bg); border: 1px solid var(--warning-border); color: var(--warning-text); }
+        
+        details { 
+            background-color: var(--light-blue); 
+            border: 1px solid var(--border-blue); 
+            border-radius: 8px; 
+            padding: 1em; 
+            margin-top: 2em; 
+            cursor: pointer; 
+            display: none; 
+            transition: background-color 0.2s;
+        }
+        details:hover {
+            background-color: #e2f1ff;
+        }
+        summary { 
+            font-weight: 600; 
+            color: var(--dark-blue); 
+        }
+        #classifier-reasoning { margin-top: 0.75em; font-style: italic; color: var(--text-dark); line-height: 1.5; }
+
+        .cursor { 
+            display: inline-block; 
+            background-color: var(--text-dark); 
+            width: 8px; 
+            height: 1.1em; 
+            animation: blink 1s step-end infinite; 
+            margin-left: 2px;
+            border-radius: 1px;
+        }
+        @keyframes blink { 50% { background-color: transparent; } }
+
+        @media (max-width: 768px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            h1 { font-size: 1.8em; }
+            .container { margin: 1em; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🤖 AI Model Synthesizer (JS)</h1>
+        <h1>🤖 AI Synthesis Engine</h1>
         <form id="prompt-form">
-            <textarea id="prompt-input" placeholder="Enter your prompt here..."></textarea>
+            <label for="prompt-input">Your Prompt</label>
+            <textarea id="prompt-input" placeholder="e.g., Explain the concept of 'technical debt' without using any analogies..."></textarea>
             
-            <label for="synthesizer-select">Synthesizer Model:</label>
-            <select id="synthesizer-select">
-                <option value="gpt" selected>Synthesize with GPT-4o</option>
-                <option value="gemini">Synthesize with Gemini 1.5 Pro</option>
-            </select>
+            <label for="constraints-input">Constraints (Optional)</label>
+            <input type="text" id="constraints-input" placeholder="e.g., use a formal tone, explain for a 5th grader...">
             
-            <button type="submit">Generate Combined Response</button>
+            <button type="submit" id="submit-button">Synthesize Response</button>
         </form>
 
-        <div id="spinner">Generating... Please wait.</div>
+        <div class="status-area">
+            <div class="spinner" id="spinner"></div>
+            <div id="status-text"></div>
+        </div>
 
-        <div id="results-container">
-            <div id="final-response" class="card" style="display: none;">
-                <h2 id="final-response-title"></h2>
-                <div id="final-output"></div>
+        <details id="work-panel">
+            <summary>Show Engine Details</summary>
+            <p id="classifier-reasoning"></p>
+        </details>
+        
+        <div class="info-banner" id="fallback-alert"></div>
+
+        <div id="results-container" style="display: none;">
+            <div class="results-grid">
+                <div class="card"><h2>GPT-5 Output</h2><div id="gpt-output"></div></div>
+                <div class="card"><h2>Gemini 2.5 Pro Output</h2><div id="gemini-output"></div></div>
             </div>
-            <div class="results" id="base-responses" style="display: none;">
-                <div class="card">
-                    <h2>GPT-4o Output</h2>
-                    <div id="gpt-output"></div>
-                </div>
-                <div class="card">
-                    <h2>Gemini 1.5 Pro Output</h2>
-                    <div id="gemini-output"></div>
-                </div>
+            <div id="final-response-card" class="card" style="margin-top: 2em;">
+                <h2 id="final-response-title">🎉 Synthesized Response</h2>
+                <div id="final-output"></div>
             </div>
         </div>
     </div>
 
     <script>
+        // --- Element References ---
         const form = document.getElementById('prompt-form');
         const input = document.getElementById('prompt-input');
-        const synthesizerSelect = document.getElementById('synthesizer-select'); // NEW
+        const constraintsInput = document.getElementById('constraints-input');
+        const submitButton = document.getElementById('submit-button');
         const spinner = document.getElementById('spinner');
-
-        const finalResponseCard = document.getElementById('final-response');
-        const finalResponseTitle = document.getElementById('final-response-title');
-        const baseResponses = document.getElementById('base-responses');
-
+        const statusText = document.getElementById('status-text');
+        
+        const workPanel = document.getElementById('work-panel');
+        const classifierReasoning = document.getElementById('classifier-reasoning');
+        const fallbackAlert = document.getElementById('fallback-alert');
+        const resultsContainer = document.getElementById('results-container');
         const finalOutput = document.getElementById('final-output');
         const gptOutput = document.getElementById('gpt-output');
         const geminiOutput = document.getElementById('gemini-output');
 
+        let eventSource;
+
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const prompt = input.value;
-            const synthesizer = synthesizerSelect.value; // NEW: Get the selected synthesizer
+            const constraints = constraintsInput.value;
+            if (!prompt) return;
+            if (eventSource) eventSource.close();
 
-            if (!prompt) {
-                alert("Please enter a prompt.");
-                return;
-            }
-
-            spinner.style.display = 'block';
-            finalResponseCard.style.display = 'none';
-            baseResponses.style.display = 'none';
-
+            // --- UI Reset and Loading State ---
+            setUIState(true, "Synthesizing...");
+            statusText.innerText = "Connecting to synthesis engine...";
+            resultsContainer.style.display = 'block';
+            workPanel.style.display = 'none';
+            fallbackAlert.style.display = 'none';
+            finalOutput.innerHTML = '';
+            gptOutput.innerHTML = '';
+            geminiOutput.innerHTML = '';
+            addCursor(gptOutput);
+            addCursor(geminiOutput);
+            
             try {
                 const response = await fetch('/combine', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prompt, synthesizer }) // NEW: Send synthesizer choice to backend
+                    body: JSON.stringify({ prompt, constraints })
                 });
 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
-                const data = await response.json();
-
-                // NEW: Update title and border based on which model synthesized
-                if (synthesizer === 'gpt') {
-                    finalResponseTitle.innerText = "🎉 Synthesized by GPT-4o";
-                    finalResponseCard.className = 'card gpt-border';
-                } else {
-                    finalResponseTitle.innerText = "🎉 Synthesized by Gemini 1.5 Pro";
-                    finalResponseCard.className = 'card gemini-border';
+                if (!response.ok || !response.body) {
+                    const errorData = await response.json().catch(() => ({ error: 'Failed to fetch or parse error response.' }));
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
                 }
-
-                finalOutput.innerText = data.finalResponse;
-                gptOutput.innerText = data.gptResult;
-                geminiOutput.innerText = data.geminiResult;
-
-                finalResponseCard.style.display = 'block';
-                baseResponses.style.display = 'grid';
+                
+                await processStream(response.body);
 
             } catch (error) {
-                console.error("Error fetching data:", error);
-                alert("An error occurred. Check the console for details.");
-            } finally {
-                spinner.style.display = 'none';
+                console.error("Error initiating fetch:", error);
+                statusText.innerText = `An error occurred: ${error.message}`;
+                setUIState(false, "Synthesize Response");
             }
         });
+        
+        async function processStream(stream) {
+            const reader = stream.getReader();
+            const decoder = new TextDecoder();
+            let buffer = '';
+
+            while (true) {
+                try {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+
+                    buffer += decoder.decode(value, { stream: true });
+                    const events = buffer.split('\n\n');
+                    buffer = events.pop();
+
+                    for (const event of events) {
+                        if (!event) continue;
+                        const eventLines = event.split('\n');
+                        const eventTypeLine = eventLines.find(line => line.startsWith('event: '));
+                        const dataLine = eventLines.find(line => line.startsWith('data: '));
+                        if (eventTypeLine && dataLine) {
+                            const eventType = eventTypeLine.substring(7).trim();
+                            const data = JSON.parse(dataLine.substring(6));
+                            handleEvent(eventType, data);
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error reading stream:', error);
+                    handleEvent('error', { message: 'Stream reading failed.' });
+                    break;
+                }
+            }
+        }
+
+        function handleEvent(type, data) {
+            switch (type) {
+                case 'status':
+                    statusText.innerText = data.message;
+                    if(data.message.includes("Synthesizing")){
+                        removeCursor(gptOutput);
+                        removeCursor(geminiOutput);
+                        addCursor(finalOutput);
+                    }
+                    break;
+                case 'initial-data':
+                    if (data.classifierReasoning) {
+                        classifierReasoning.innerText = `Pipeline choice: ${data.pipelineName}\n\nReasoning: ${data.classifierReasoning}`;
+                        workPanel.style.display = 'block';
+                    }
+                    break;
+                case 'fallback-log':
+                    if(data.log) {
+                       fallbackAlert.innerText = `⚠️ Notice: ${data.log}`;
+                       fallbackAlert.style.display = 'block';
+                    }
+                    break;
+                case 'modelA-chunk':
+                    removeCursor(gptOutput);
+                    gptOutput.innerText += data.text;
+                    addCursor(gptOutput);
+                    break;
+                case 'modelB-chunk':
+                    removeCursor(geminiOutput);
+                    geminiOutput.innerText += data.text;
+                    addCursor(geminiOutput);
+                    break;
+                case 'synthesis-chunk':
+                    removeCursor(finalOutput);
+                    finalOutput.innerText += data.text;
+                    addCursor(finalOutput);
+                    break;
+                case 'done':
+                    console.log('Stream finished:', data.message);
+                    setUIState(false, "Synthesize Response");
+                    removeCursor(gptOutput);
+
+                    removeCursor(geminiOutput);
+                    removeCursor(finalOutput);
+                    break;
+                case 'error':
+                    console.error('Server-side error:', data.message);
+                    statusText.innerText = `An error occurred: ${data.message}`;
+                    setUIState(false, "Synthesize Response");
+                    removeCursor(gptOutput);
+                    removeCursor(geminiOutput);
+                    removeCursor(finalOutput);
+                    break;
+            }
+        }
+        
+        function setUIState(isLoading, buttonText) {
+            submitButton.disabled = isLoading;
+            submitButton.innerText = buttonText;
+            spinner.style.display = isLoading ? 'block' : 'none';
+            if (!isLoading) statusText.innerText = "";
+        }
+        
+        function addCursor(element) {
+            if (!element.querySelector('.cursor')) {
+                const cursor = document.createElement('span');
+                cursor.className = 'cursor';
+                element.appendChild(cursor);
+            }
+        }
+
+        function removeCursor(element) {
+            const cursor = element.querySelector('.cursor');
+            if (cursor) {
+                cursor.remove();
+            }
+        }
     </script>
 </body>
 </html>
+

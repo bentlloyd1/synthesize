@@ -3,7 +3,6 @@ import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dotenv from 'dotenv';
 import path from 'path';
-import { performance } from 'perf_hooks';
 
 dotenv.config();
 
@@ -18,7 +17,6 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // --- CONFIGURATION ---
 const CLASSIFIER_MODEL = 'gpt-4o';
-
 const DYNAMIC_PIPELINES = {
     "FACTUAL": {
         name: "Factual Pipeline (SOTA Base -> Quick Synth)",
@@ -30,103 +28,211 @@ const DYNAMIC_PIPELINES = {
     }
 };
 
-// --- META-PROMPTS ---
-function getSynthesisPrompt(prompt, gptResponse, geminiResponse) {
-    return `Your persona is a helpful and pragmatic expert. Your task is to synthesize two AI-generated responses into a single, superior answer. Original User Prompt: "${prompt}"\n\n---\nResponse A:\n"${gptResponse}"\n\n---\nResponse B:\n"${geminiResponse}"\n\n---\nInstructions:\n1. Assess Helpfulness: Prioritize information from the more helpful response.\n2. Extract Core Information: Identify key facts.\n3. Synthesize: Create a single, cohesive answer.\n4. Final Output: Be direct. Do not mention the synthesis process.\n\nSynthesized and Superior Response:`;
+// --- HELPER to format chat history ---
+function formatChatHistory(history) {
+    if (!history || history.length === 0) return "No previous conversation.";
+    return history.map(turn => `${turn.role === 'user' ? 'User' : 'Assistant'}: ${turn.content}`).join('\n');
 }
 
-function getRefinementPrompt(prompt, singleResponse) {
-    return `Your persona is a helpful and pragmatic expert. Your task is to review and improve the following AI-generated response. The goal is to make it clearer, more comprehensive, and more direct. Original User Prompt: "${prompt}"\n\n---\nAI Response to Refine:\n"${singleResponse}"\n\n---\nInstructions:\n1. Analyze the response for clarity, accuracy, and completeness.\n2. Rewrite it to be a superior version. Ensure it directly answers the user's prompt.\n3. Do not mention the refinement process.\n\nRefined and Superior Response:`;
+// --- META-PROMPTS (Updated to accept chat history) ---
+function getSynthesisPrompt(prompt, gptResponse, geminiResponse, constraints = '', chatHistory = []) {
+    const historyText = formatChatHistory(chatHistory);
+    const constraintInstruction = constraints ? `\n\nCRITICAL INSTRUCTION: Adhere to this constraint: ${constraints}\n` : '';
+
+    return `You are an expert synthesizer. Given a conversation history and two new draft responses to the user's latest prompt, your task is to merge them into one superior, cohesive response.
+
+Conversation History:
+${historyText}
+
+User's Latest Prompt: "${prompt}"
+
+---
+Draft Response A:
+"${gptResponse}"
+
+---
+Draft Response B:
+"${geminiResponse}"
+---
+${constraintInstruction}
+Synthesize the two drafts into a single, final response that directly and thoughtfully answers the user's latest prompt, maintaining the context of the conversation. Final Response:`;
 }
 
-function getClassificationPrompt(prompt) {
-    return `You are an expert at analyzing user prompts. Your task is to classify the user's intent as either "FACTUAL" or "CREATIVE".\n\n- "FACTUAL" intent involves requests for explanations, code, technical information, summaries, or structured answers.\n- "CREATIVE" intent involves requests for stories, brainstorming, poetry, or other open-ended generative tasks.\n\nFirst, provide a brief, step-by-step reasoning for your decision in one or two sentences.\nSecond, on a new line, provide the final classification as a single word: FACTUAL or CREATIVE.\n\nUser Prompt: "${prompt}"\n\nReasoning:\nClassification:`;
+function getRefinementPrompt(prompt, singleResponse, constraints = '', chatHistory = []) {
+     const historyText = formatChatHistory(chatHistory);
+     const constraintInstruction = constraints ? `\n\nCRITICAL INSTRUCTION: Adhere to this constraint: ${constraints}\n` : '';
+
+    return `You are an expert editor. Review the following draft response in the context of the conversation history and the user's latest prompt. Your task is to refine and improve it.
+
+Conversation History:
+${historyText}
+
+User's Latest Prompt: "${prompt}"
+
+---
+Draft Response to Refine:
+"${singleResponse}"
+---
+${constraintInstruction}
+Rewrite the draft to be a superior, final response that directly answers the user's latest prompt and adheres to any constraints. Final Response:`;
+}
+
+function getClassificationPrompt(prompt, chatHistory = []) {
+    const historyText = formatChatHistory(chatHistory);
+    return `Analyze the user's LATEST prompt in the context of the conversation history. Classify the intent of the LATEST prompt as "FACTUAL" or "CREATIVE".
+
+- "FACTUAL": Requests for explanations, code, technical info, summaries.
+- "CREATIVE": Requests for stories, brainstorming, poetry, open-ended tasks.
+
+First, provide a brief reasoning. Second, on a new line, provide the classification.
+
+Conversation History:
+${historyText}
+
+User's Latest Prompt: "${prompt}"
+
+Reasoning:
+Classification:`;
 }
 
 // --- API CALLS ---
-async function getGptResponse(prompt, modelName) {
+async function getGptResponse(prompt, modelName, chatHistoryForApi = []) {
     try {
-        const response = await openai.chat.completions.create({ model: modelName, messages: [{ role: "user", content: prompt }] });
+        const messages = [...chatHistoryForApi, { role: "user", content: prompt }];
+        const response = await openai.chat.completions.create({ model: modelName, messages: messages });
         return response.choices[0].message.content;
     } catch (error) {
-        console.error(`Error from OpenAI (${modelName}):`, error);
         return `ERROR: OpenAI API call failed for model ${modelName}.`;
     }
 }
-
-async function getGeminiResponse(prompt, modelName) {
+async function getGeminiResponse(prompt, modelName, chatHistoryForApi = []) {
     try {
         const model = genAI.getGenerativeModel({ model: modelName });
-        const result = await model.generateContent(prompt);
+        const chat = model.startChat({ history: chatHistoryForApi });
+        const result = await chat.sendMessage(prompt);
         return result.response.text();
     } catch (error) {
-        console.error(`Error from Google AI (${modelName}):`, error);
         return `ERROR: Google AI API call failed for model ${modelName}.`;
     }
 }
 
+// Helper to convert our simple history to API-specific formats
+function convertHistoryForApi(history, apiType) {
+    if (!history) return [];
+    if (apiType === 'openai') {
+        return history.map(turn => ({ role: turn.role, content: turn.content }));
+    }
+    if (apiType === 'gemini') {
+        return history.map(turn => ({ role: turn.role, parts: [{ text: turn.content }] }));
+    }
+    return [];
+}
+
+
 // --- THE /combine ENDPOINT ---
 app.post('/combine', async (req, res) => {
-    const { prompt } = req.body;
-    if (!prompt) {
-        return res.status(400).json({ error: "Prompt is required." });
-    }
+    const { prompt, constraints, chatHistory } = req.body;
+    if (!prompt) return res.status(400).json({ error: "Prompt is required." });
+
+    res.setHeader('Content-Type', 'text/event-stream');
+    res.setHeader('Cache-Control', 'no-cache');
+    res.setHeader('Connection', 'keep-alive');
+    res.flushHeaders();
+
+    const sendEvent = (event, data) => {
+        res.write(`event: ${event}\n`);
+        res.write(`data: ${JSON.stringify(data)}\n\n`);
+    };
 
     try {
+        const historyForPrompting = chatHistory.slice(0, -1); // History excluding the current prompt
+
         // Step 1: Classify intent
-        const classificationPrompt = getClassificationPrompt(prompt);
-        const classificationResponse = await getGptResponse(classificationPrompt, CLASSIFIER_MODEL);
+        sendEvent('status', { message: "Classifying prompt intent..." });
+        const classificationResponse = await getGptResponse(getClassificationPrompt(prompt, historyForPrompting), CLASSIFIER_MODEL);
         const classifierLines = classificationResponse.trim().split('\n');
         const finalClassification = classifierLines.pop().trim().toUpperCase();
         const reasoning = classifierLines.join(' ').replace('Reasoning:', '').trim();
         const intent = finalClassification.includes("CREATIVE") ? "CREATIVE" : "FACTUAL";
-
-        // Step 2: Select pipeline
         const pipeline = DYNAMIC_PIPELINES[intent];
         const config = pipeline.config;
+        
+        sendEvent('initial-data', { pipelineName: pipeline.name, classifierReasoning: reasoning });
+        sendEvent('status', { message: "Generating base responses..." });
+        
+        // Step 2: Base Generation
+        const gptHistoryForApi = convertHistoryForApi(historyForPrompting, 'openai');
+        const geminiHistoryForApi = convertHistoryForApi(historyForPrompting, 'gemini');
 
-        // Step 3: Base Generation (in parallel)
-        const [gptResult, geminiResult] = await Promise.all([
-            getGptResponse(prompt, config.gpt),
-            getGeminiResponse(prompt, config.gemini)
-        ]);
+        let gptResult = '';
+        let geminiResult = '';
+        let gptFailed = false;
+        let geminiFailed = false;
 
-        // Step 4: Handle fallbacks and prepare for synthesis
-        const gptFailed = gptResult.includes('ERROR');
-        const geminiFailed = geminiResult.includes('ERROR');
+        const gptStreamPromise = (async () => {
+            try {
+                const stream = await openai.chat.completions.create({ model: config.gpt, messages: [...gptHistoryForApi, { role: 'user', content: prompt }], stream: true });
+                for await (const chunk of stream) {
+                    const text = chunk.choices[0]?.delta?.content || "";
+                    gptResult += text;
+                    sendEvent('modelA-chunk', { text });
+                }
+            } catch (e) { gptFailed = true; sendEvent('modelA-chunk', { text: `\n\n--- ERROR: OpenAI API call failed. ---` }); }
+        })();
+
+        const geminiStreamPromise = (async () => {
+             try {
+                const model = genAI.getGenerativeModel({ model: config.gemini });
+                const chat = model.startChat({ history: geminiHistoryForApi });
+                const result = await chat.sendMessageStream(prompt);
+                for await (const chunk of result.stream) {
+                    const text = chunk.text();
+                    geminiResult += text;
+                    sendEvent('modelB-chunk', { text });
+                }
+            } catch (e) { geminiFailed = true; sendEvent('modelB-chunk', { text: `\n\n--- ERROR: Google AI API call failed. ---` }); }
+        })();
+        
+        await Promise.all([gptStreamPromise, geminiStreamPromise]);
+
+        // Step 3: Synthesis
         let synthesisPrompt;
         let fallbackLog = '';
+        if (gptFailed && geminiFailed) { /* ... */ return res.end(); }
+        else if (gptFailed) { synthesisPrompt = getRefinementPrompt(prompt, geminiResult, constraints, historyForPrompting); fallbackLog = "Model A failed. Refining Model B's response."; }
+        else if (geminiFailed) { synthesisPrompt = getRefinementPrompt(prompt, gptResult, constraints, historyForPrompting); fallbackLog = "Model B failed. Refining Model A's response."; }
+        else { synthesisPrompt = getSynthesisPrompt(prompt, gptResult, geminiResult, constraints, historyForPrompting); }
+        
+        sendEvent('fallback-log', { log: fallbackLog });
+        sendEvent('status', { message: "Synthesizing final response..." });
 
-        if (gptFailed && geminiFailed) {
-            return res.json({ finalResponse: "FATAL: Both primary models failed. Please try again.", gptResult, geminiResult, pipelineName: pipeline.name, fallbackLog: "Both base models failed.", classifierReasoning: reasoning });
-        } else if (gptFailed) {
-            synthesisPrompt = getRefinementPrompt(prompt, geminiResult);
-            fallbackLog = "A primary model was unavailable. Refining the best available response.";
-        } else if (geminiFailed) {
-            synthesisPrompt = getRefinementPrompt(prompt, gptResult);
-            fallbackLog = "A primary model was unavailable. Refining the best available response.";
-        } else {
-            synthesisPrompt = getSynthesisPrompt(prompt, gptResult, geminiResult);
-        }
-
-        // Step 5: Run Synthesis
+        // Step 4: Synthesis Stream
         const synthesizerModel = config.synthesizer;
-        const synthFn = synthesizerModel.startsWith('gemini') ? getGeminiResponse : getGptResponse;
-        let finalResponse = await synthFn(synthesisPrompt, synthesizerModel);
-
-        if (finalResponse.includes('ERROR')) {
-            finalResponse = !gptFailed ? gptResult : geminiResult;
-            fallbackLog += (fallbackLog ? " " : "") + "The final synthesis step failed. Displaying the best available response.";
+        try {
+            const synthHistoryForApi = convertHistoryForApi(historyForPrompting, synthesizerModel.startsWith('gemini') ? 'gemini' : 'openai');
+            if (synthesizerModel.startsWith('gemini')) {
+                const model = genAI.getGenerativeModel({ model: synthesizerModel });
+                const chat = model.startChat({ history: synthHistoryForApi });
+                const result = await chat.sendMessageStream(synthesisPrompt);
+                for await (const chunk of result.stream) { sendEvent('synthesis-chunk', { text: chunk.text() }); }
+            } else {
+                const stream = await openai.chat.completions.create({ model: synthesizerModel, messages: [...synthHistoryForApi, { role: 'user', content: synthesisPrompt }], stream: true });
+                for await (const chunk of stream) { sendEvent('synthesis-chunk', { text: chunk.choices[0]?.delta?.content || "" }); }
+            }
+        } catch (e) {
+            fallbackLog += " Synthesis step failed. Displaying best available response.";
+            sendEvent('fallback-log', { log: fallbackLog });
+            const fallbackResponse = !gptFailed ? gptResult : geminiResult;
+            sendEvent('synthesis-chunk', { text: `\n\n--- SYNTHESIS FAILED ---\nDisplaying best available base response:\n\n${fallbackResponse}` });
         }
 
-        res.json({ finalResponse, gptResult, geminiResult, pipelineName: pipeline.name, fallbackLog, classifierReasoning: reasoning });
-
+        sendEvent('done', { message: "Stream complete." });
+        res.end();
     } catch (error) {
-        console.error("Error in /combine endpoint:", error);
-        res.status(500).json({ error: "An unexpected error occurred." });
+        sendEvent('error', { message: `An unexpected error occurred: ${error.message}` });
+        res.end();
     }
 });
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
-});
+app.listen(port, () => { console.log(`Server running at http://localhost:${port}`); });
+
